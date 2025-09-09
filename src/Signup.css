@@ -24,3 +24,16 @@
   background-color: #fff;
   color: #000;
 }
+
+.zipcode-field {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.zipcode-field input {
+  flex: 1;
+}
+
+.zipcode-field button {
+  padding: 0.5rem;
+}
