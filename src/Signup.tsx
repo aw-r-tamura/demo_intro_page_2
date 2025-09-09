@@ -29,10 +29,32 @@ function Signup() {
     password: '',
     confirm: '',
   })
+  const [passwordError, setPasswordError] = useState('')
+
+  const validatePassword = (password: string, birthdate: string) => {
+    const baseValid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)
+    if (!baseValid) return false
+    if (!birthdate) return true
+    const normalizedBirth = birthdate.replace(/-/g, '')
+    return (
+      !password.includes(birthdate) &&
+      !password.includes(normalizedBirth)
+    )
+  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
+    setForm((prev) => {
+      const updated = { ...prev, [name]: value }
+      if (name === 'password' || name === 'birthdate') {
+        setPasswordError(
+          validatePassword(updated.password, updated.birthdate)
+            ? ''
+            : 'パスワードは英字と数字を含む8文字以上で、生年月日を含まないものを入力してください'
+        )
+      }
+      return updated
+    })
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -118,6 +140,10 @@ function Signup() {
             value={form.password}
             onChange={handleChange}
             required
+            error={Boolean(passwordError)}
+            helperText={
+              passwordError || '英字と数字を含む8文字以上、生年月日を含まない'
+            }
           />
           <TextField
             label="パスワード確認"
