@@ -1,9 +1,18 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
-import './Signup.css'
+import { useState } from 'react'
+import type { ChangeEvent, FormEvent } from 'react'
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Stack,
+} from '@mui/material'
 
 interface FormState {
   name: string
   email: string
+  birthdate: string
   postalCode: string
   address: string
   password: string
@@ -14,6 +23,7 @@ function Signup() {
   const [form, setForm] = useState<FormState>({
     name: '',
     email: '',
+    birthdate: '',
     postalCode: '',
     address: '',
     password: '',
@@ -51,53 +61,78 @@ function Signup() {
   }
 
   return (
-    <div className="signup-container">
-      <h1>新規登録</h1>
-      <form onSubmit={handleSubmit} className="signup-form">
-        <label>
-          名前
-          <input type="text" name="name" value={form.name} onChange={handleChange} required />
-        </label>
-        <label>
-          メールアドレス
-          <input type="email" name="email" value={form.email} onChange={handleChange} required />
-        </label>
-        <label>
-          郵便番号
-          <div className="zipcode-field">
-            <input
-              type="text"
+    <Container maxWidth="sm" sx={{ mt: 4 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        新規登録
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit}>
+        <Stack spacing={2}>
+          <TextField
+            label="名前"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            label="メールアドレス"
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            label="生年月日"
+            type="date"
+            name="birthdate"
+            value={form.birthdate}
+            onChange={handleChange}
+            InputLabelProps={{ shrink: true }}
+            required
+          />
+          <Box display="flex" gap={1}>
+            <TextField
+              label="郵便番号"
               name="postalCode"
               value={form.postalCode}
               onChange={handleChange}
               required
+              fullWidth
             />
-            <button type="button" onClick={handleZipSearch}>
+            <Button variant="outlined" onClick={handleZipSearch}>
               住所検索
-            </button>
-          </div>
-        </label>
-        <label>
-          住所
-          <input
-            type="text"
+            </Button>
+          </Box>
+          <TextField
+            label="住所"
             name="address"
             value={form.address}
             onChange={handleChange}
             required
           />
-        </label>
-        <label>
-          パスワード
-          <input type="password" name="password" value={form.password} onChange={handleChange} required />
-        </label>
-        <label>
-          パスワード確認
-          <input type="password" name="confirm" value={form.confirm} onChange={handleChange} required />
-        </label>
-        <button type="submit">登録</button>
-      </form>
-    </div>
+          <TextField
+            label="パスワード"
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            label="パスワード確認"
+            type="password"
+            name="confirm"
+            value={form.confirm}
+            onChange={handleChange}
+            required
+          />
+          <Button type="submit" variant="contained">
+            登録
+          </Button>
+        </Stack>
+      </Box>
+    </Container>
   )
 }
 
